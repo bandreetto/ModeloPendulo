@@ -94,19 +94,19 @@
 \begin{equation}
   \begin{array}{lcl}
     \frac{d\theta}{dt} = x \\
-    \frac{dx}{dt} + \frac{g}{l} sen \theta = 0
+    \frac{d\omega}{dt} + \frac{g}{l} sen \theta = 0
   \end{array}
 \end{equation}
 
 \tab  Discretizando a equação (2), para aplicação do método de Euler Modificado, temos:
 \begin{equation}
   \begin{array}{lcl}
-		x_{k+1} = x_k - \Delta t \frac{g}{l} sen \theta_k \\
-		\theta_{k+1} = \theta_k + \Delta t x_k
+		\omega_{k+1} = \omega_k - \Delta t \frac{g}{l} sen \theta_k \\
+		\theta_{k+1} = \theta_k + \Delta t \omega_k
 	\end{array}
 \end{equation}
 
-\tab  Utilizaremos como condições iniciais $\theta_0 = \frac{\pi}{4}$ \s e  $x_0 = 0$
+\tab  Utilizaremos como condições iniciais $\theta_0 = \frac{\pi}{4}$  e  $\omega_0 = 0$
 
 \newpage
 
