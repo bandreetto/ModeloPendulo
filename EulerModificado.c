@@ -1,16 +1,18 @@
 #include "stdio.h"
 #include "math.h"
 
+double fo(double w);
+double fw(double o);
 
 int main(int argc, char const *argv[]) {
-  double tf = 100, t0, dt;
-  double g = 9.8, l = 1;
-  double o0 = 45, w0 = 0, o1, w1;
+  double tf = 10, t0, dt;
+  double g = 9.8, l = 1, ko, kw;
+  double o0 = M_PI/4, w0 = 0, o1, w1;
 
   int n = 100000;
 
   dt = (tf - t0)/n;
-  printf("t\ttheta\tomega\n", );
+  printf("t\ttheta\tomega\n");
   printf("%f\t%f\t%f\n", t0, o0, w0);
 
   while (t0 <= tf) {
@@ -23,6 +25,8 @@ int main(int argc, char const *argv[]) {
     o0 = o1;
     w0 = w1;
     t0 += dt;
+
+    printf("%f\t%f\t%f\n", t0, o0, w0);
   }
   return 0;
 }
