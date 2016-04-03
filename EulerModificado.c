@@ -14,12 +14,23 @@ int main(int argc, char const *argv[]) {
   printf("%f\t%f\t%f\n", t0, o0, w0);
 
   while (t0 <= tf) {
-    o1 = o0 + dt*w0;
-    w1 = w0 - dt*(g/l)*sin(o0);
+    ko = fo(w0);
+    kw = fw(o0);
+
+    o1 = o0 + dt*fo(w0 + 0.5*dt*ko);
+    w1 = w0 - dt*fw(o0 + 0.5*dt*kw);
 
     o0 = o1;
     w0 = w1;
     t0 += dt;
   }
   return 0;
+}
+
+double fo(double w) {
+  return w;
+}
+
+double fw(double o) {
+  return -9.8*sin(o);
 }
