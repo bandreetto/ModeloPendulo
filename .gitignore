@@ -158,6 +158,9 @@ pythontex-files-*/
 # Latexian
 TSWLatexianTemp*
 
-# PDF e bib
+# PDF e bib e arquivos do C
 *.pdf
 *.bib
+*.o
+.gitignore~
+*.tex.backup
