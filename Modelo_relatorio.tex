@@ -12,7 +12,9 @@
 \newcommand{\Rn}{{\ensuremath{\mathbb{R}}}^{n}}
 \newcommand{\Rm}{{\ensuremath{\mathbb{R}}}^{m}}
 \newcommand{\Rmn}{{\ensuremath{\mathbb{R}}}^{{m}\times{n}}}
-\newcommand{\contcaption}[1]{\vspace*{-0.6\baselineskip}\begin{center}#1\end{center}\vspace*{-0.6\baselineskip}}
+\newcommand{\contcaption}[1]{\vspace*{-0.6\baselineskip}\begin{center}#1\end{center}
+\vspace*{-0.6\baselineskip}}
+\newcommand\tab[1][0.5cm]{\hspace*{#1}}
 %=======================================================================
 % Dimensões da página
 \usepackage{a4}                       % tamanho da página
@@ -24,7 +26,7 @@
        
 % Ser indulgente no preenchimento das linhas
 \sloppy
-
+ 
 
 \begin{document}
 
@@ -37,15 +39,22 @@
 
 
 \pagestyle {empty}
-\abstract{Este é um ``boneco'' de um relatório na forma próxima ao que gostaria. As seções não são as mesmas que pedi
-mas já representa um bom avanço. Modifiquem à vontade. Encontrei fazendo {\it google it} em ``modelo de relatório em latex''.
-Encontrei também sugestões de editores inteligentes: o  {\it Kile}\, para usuários de linux e {\it TeXnicCenter}\, para 
-usuários de Windows. Eu uso o {\it Kile}. O para windows eu não conheço. Consta que ambos são programas gratuitos.}
+\abstract{Este trabalho visa demonstrar a metodologia aplicada à solução de um problema real utilizando conceitos númericos de modelamento matemático. Será utilizado como escopo de estudos o modelo SIR de epidemiologia, que se trata de um sistema de 3 equações diferenciais ordinárias capazes de realizar estimativas de processos epidemiológicos.\\
+\tab	O modelo SIR leva em consideração a forma como infecções se propagam em uma população, esse sistema divide a população em três categorias distintas: suscetíveis, infectados e recuperados. O modulo admite que pessoas vulneráveis são potenciais infectados e infectados são potenciais recuperados, além disso deve-se realizar a estimativa de algumas costantes, como taxa de contágio e taxa de cura, admitir que o número de habitantes é sempre constante e formado apenas por indivíduos contidos nas categorias descritas anteriormente.\\
+\tab	Para resolução do sistema de EDOs do modelo SIR, utilizaremos o Método de Range-Kutta explícito de 2ª ordem, denotado também por Método de Euler Melhorado. Esse algoritmo realiza diversas iterações matemáticas para calcular valores extremamente próximos aos valores reais de um equação, cuja solução é desconhecida.\\
+\tab 	Os cálculos numéricos serão desenvolvidos com o auxílio de uma ferramenta computacional, o software Matlab, capaz de realizar o número necessário de iterações necessárias para validar o método utilizado e fornecer gráficos que auxiliam na visualização e compreensão dos resultados. Além disso, será desenvolvida uma solução manufaturada do problema estudado, para verificação e validação do funcionamento do método computacional utilizado.\\
+\tab	Por fim, será apresentada uma dissertação na forma de uma conclusão, cujo intuito é o de elucidar e apresentar os conhecimentos adquiridos durante a manufaturação deste trabalho.\\}
+
+\smallskip
+\vfill
+
+\noindent \textbf{Palavras-chave: } Modelo SIR de epidemiologia, resolução do sistema de EDOs, Método de Range-Kutta, Matlab.
 
 \newpage
 
 \tableofcontents
 
+\newpage
 
 % Numeração em romanos para páginas iniciais (sumários, listas, etc)
 %\pagenumbering {roman}
@@ -66,18 +75,40 @@ usuários de Windows. Eu uso o {\it Kile}. O para windows eu não conheço. Consta 
 \parskip 5pt  
 
 \section{Introdução}
-
 %comando cria itens
-\begin{itemize}
-	\item introduzir o problema a ser estudado
-	\item apresentar trabalhos relacionados
-	\item apresentar motivação
-	\item apresentar objetivos
-	\item último parágrafo deve conter a organização do documento
-	\item novo item
-\end{itemize}
+\tab	Estudos relacionados ao surto e propagação de doenças infecciosas são imprescendíveis para o desenvolvimento de estratégias de controle patológico, dentre as muitas ferramentas utilizadas pode-se destacar o modelamento matématico. Essa ferramenta possui capacidade de realizar previsões plauíveis acerca do espalhamento e controle de infecções em uma determinada população. \\
+\tab	Este trabalho terá como foco apresentar, de forma técnica e teórica, o modelamento matemático conhecido como SIR(Suscetíveis, Infectados e Recuperados), que pode ser descrito como um sistema de 3 equações diferenciais ordinárias. Esse sistema descreve a propagação de uma infecção, em uma determinda população, cujo número de habitantes é fixo, levando em consideração 3 tipos de indivíduos: sucetíveis, infectados e recuperados. \\
+\tab	Esse modelo foi desenvolvido em 1927 pelos cientistas W. O. Kermack e A. G. McKendrick, levando consideração algumas hipóteses como o fato de cada indivíduo, na população estudada, possuir probabilidade igual em contrair a doença, o número de habitantes na população é fixo e uma estimativa para taxa de espalhamento da doença. Além disso a transição de um indivíduo de suscetível para infectado ou de infectado para suscetível deve ocorrer de forma simultânea. \\
+\tab	O modelo matemático SIR, apesar de ainda ser muito utilizado, foi alterado de modo a melhor se adaptar a certos tipos de infecções e implementando outros tipos de indivíduos às equações. Dentre essas variantes pode-se destacar o modelo SIRS, que admite recuperação sem imunidade à doença, ou seja os indivíduos classe recuperado podem voltar a classe suscetível, e o modelo SEIR, que leva em consideração uma fase latente ou de exposição à doença, durante o qual o indivíduo adentra a classe E(Exposto) antes de estar infectado. \\
+\tab	Esse trabalho foi organizado de modo a apresentar o modelo matemático de controle infeccioso SIR, apresentando uma base argumentativa dividida em um conjunto de cálculos teóricos, gráficos e dissertações, capazes de demonstrar seu funcionamento. \\
 
+\newpage
 
+\section{Modelagem Matemática}
+\tab  Para resolver o sistema de equações diferenciais (2), oriundo da equação problema (1), utilizaremos o método de Euler Modificado. O método de Euler Modificad, ou método de Runge-Kutta de segunda ordem, é um método de dois passos, ou seja, estaremos utilizando dois valores de x para determinar o próximo valor da função.
+\begin{equation}
+  \frac{{d}^2\theta}{dt^2} + \frac{g}  {l} sen \theta = 0
+\end{equation}
+
+\tab  Separando a equação inicial em um sistema de duas equações para que possamos trabalhar com E.D.O.`s de primeira ordem, temos:
+\begin{equation}
+  \begin{array}{lcl}
+    \frac{d\theta}{dt} = x \\
+    \frac{dx}{dt} + \frac{g}{l} sen \theta = 0
+  \end{array}
+\end{equation}
+
+\tab  Discretizando a equação (2), para aplicação do método de Euler Modificado, temos:
+\begin{equation}
+  \begin{array}{lcl}
+		x_{k+1} = x_k - \Delta t \frac{g}{l} sen \theta_k \\
+		\theta_{k+1} = \theta_k + \Delta t x_k
+	\end{array}
+\end{equation}
+
+\tab  Utilizaremos como condições iniciais $\theta_0 = \frac{\pi}{4}$ \s e  $x_0 = 0$
+
+\newpage
 
 \section{Exemplos de Equações}
 Nesta seção serão apresentados diferentes exemplos de equações.
@@ -210,9 +241,11 @@ void main(void)             // ''main'' method always called first.
 
 \begin{figure}[htb]
 	\centering
-		\includegraphics[height=14cm]{figura}
-	\label{fig:pdsmodel}
+		\includegraphics[width=9cm,height=7.5cm,angle=0]{C:/Users/Andrekv87/Pictures/Graficos/t-10_a-0,100.png}
+		\caption{Blado}
+	\label{fig:Grafico 1}
 \end{figure}
+\ref{fig:Grafico 1}
 
 %\clearpage %começa nova página
 
@@ -227,7 +260,16 @@ Apresentar as conclusões finais.
 \vspace{5mm}
 {\bf{Agradecimentos}} Agradecimentos aos colaboradores, professores que eventualmente vocês procuraram para ajudar em 
 algum aspecto do modelo de vocês, colega que ajudou a compor alguma parte do trabalho e assim por diante.
+\vfill
+\newpage
 
+\begin{appendix}
+	\listoffigures
+	\listoftables
+\end{appendix}
+
+\vfill
+\newpage
 %Incluindo referências bibliográficas
 \bibliographystyle{plain} %define o estilo         
 \bibliography{bibliografia} %busca o arquivo

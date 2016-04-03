@@ -157,3 +157,7 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
+
+# PDF e bib
+*.pdf
+*.bib
