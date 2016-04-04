@@ -93,22 +93,65 @@
 \tab  Separando a equação inicial em um sistema de duas equações para que possamos trabalhar com E.D.O.`s de primeira ordem, temos:
 \begin{equation}
   \begin{array}{lcl}
-    \frac{d\theta}{dt} = x \\
+    \frac{d\theta}{dt} = \omega \\
     \frac{d\omega}{dt} + \frac{g}{l} sen \theta = 0
   \end{array}
 \end{equation}
 
-\tab  Discretizando a equação (2), para aplicação do método de Euler Modificado, temos:
+\tab  Discretizando a equação (2), para aplicação do método de Euler Modificado, utilizando $k_\omega$ e $k_\theta$ como variáveis auxiliares na aplicação do método, temos:
 \begin{equation}
   \begin{array}{lcl}
-		\omega_{k+1} = \omega_k - \Delta t \frac{g}{l} sen \theta_k \\
-		\theta_{k+1} = \theta_k + \Delta t \omega_k
+		k_\theta = f_\theta(\omega) = \omega \\
+		k_\omega = f_\omega(\theta) = -\frac{g}{l} sen \theta \\
+		\theta_{k+1} = \theta_k + \Delta t f_\theta(\omega_k + \frac{\Delta t}{2} k_\theta) \\
+		\omega_{k+1} = \omega_k + \Delta t f_\omega(\theta_k + \frac{\Delta t}{2} k_\omega)
 	\end{array}
 \end{equation}
 
-\tab  Utilizaremos como condições iniciais $\theta_0 = \frac{\pi}{4}$  e  $\omega_0 = 0$, implementamos o método na linguagem C, descrito a seguir:
+\tab  Utilizaremos como condições iniciais $\theta_0 = \frac{\pi}{4}$  e  $\omega_0 = 0$ e com tempo variando de 0 seguntos até 10 segundos, implementamos o método na linguagem C, descrito a seguir:
 
-\newpage
+\begin{verbatim}
+  #include "stdio.h"
+#include "math.h"
+
+double fo(double w);
+double fw(double o);
+
+int main(int argc, char const *argv[]) {
+  double tf = 10, t0, dt;
+  double g = 9.8, l = 1, ko, kw;
+  double o0 = -M_PI/4, w0 = 0, o1, w1;
+
+  int n = 100000;
+
+  dt = (tf - t0)/n;
+  printf("t\ttheta\tomega\n");
+  printf("%f\t%f\t%f\n", t0, o0, w0);
+
+  while (t0 <= tf) {
+    ko = fo(w0);
+    kw = fw(o0);
+
+    o1 = o0 + dt*fo(w0 + 0.5*dt*ko);
+    w1 = w0 - dt*fw(o0 + 0.5*dt*kw);
+
+    o0 = o1;
+    w0 = w1;
+    t0 += dt;
+
+    printf("%f\t%f\t%f\n", t0, o0, w0);
+  }
+  return 0;
+}
+
+double fo(double w) {
+  return w;
+}
+
+double fw(double o) {
+  return -9.8*sin(o);
+}
+\end{verbatim}
 
 \section{Exemplos de Equações}
 Nesta seção serão apresentados diferentes exemplos de equações.

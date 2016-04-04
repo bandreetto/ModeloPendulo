@@ -7,7 +7,7 @@ double fw(double o);
 int main(int argc, char const *argv[]) {
   double tf = 10, t0, dt;
   double g = 9.8, l = 1, ko, kw;
-  double o0 = M_PI/4, w0 = 0, o1, w1;
+  double o0 = -M_PI/4, w0 = 0, o1, w1;
 
   int n = 100000;
 
